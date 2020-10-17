@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>  
+
+  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font: 400 20px/1.8 "Elianto", sans-serif;
+      color: black;
+    }
+
+    .bgimg-1, .bgimg-2{
+      position: relative;
+      opacity: 0.9;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+
+    }
+    .bgimg-1 {
+      background-image: url("static/NEWS.jpg");
+      min-height: 100%;
+    }
+
+    .bgimg-2 {
+      background-image: url("static/pic1.jpg");
+      min-height: 100%;
+
+    }
+    .btn{
+      height: 50px;
+      width: 300px;
+    }
+
+    .caption {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      text-align: center;
+      color: #000;
+    }
+
+    .caption span.border {
+      background-color: #8A4334;
+      color: #fff;
+      padding: 18px;
+      font-size: 25px;
+      letter-spacing: 10px;
+    }
+
+    h3 {
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      font: 20px "Lato", sans-serif;
+      color: #111;
+    }
+
+    /* scroling*/
+    @media only screen and (max-device-width: 1024px) {
+        .bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4, .bgimg-5, .bgimg-6 {
+            background-attachment: scroll;
+        }
+    }
+    img {
+        opacity: 0.5;
+        filter: alpha(opacity=50); /* For IE8 and earlier */
+    }
+
+    .container .btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        background-color:transparent;
+        color: white;
+        font-size: 80px;
+        padding: 16px 30px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        text-align: center;
+        padding: 80px 200px;
+      
+    }
+    .container .btn:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        background-color: transparent;
+        color: white;
+    }
+  </style>
+	<title>Text Summarizer</title>
+
+</head>
+
+<body>
+  <div>
+    <div style="text-align: center; margin: 50px; background-color: blanchedalmond; padding: 50px;">
+        <h1 style="color: black;">TEXT SUMMARIZER BOT </h1>  
+    </div>
+
+    <div style="text-align:center; margin: 50px; padding:50px; text-align: justify; background-color: blanchedalmond;">
+      <h2 style="text-align:center; color: blue; padding-bottom: 20px;">About the Project </h3>
+      <p style="color: black;">This Projects gives us summary by providing inputs in any of the following three forms.
+        <ol>
+          <li>Text Input</li>
+          <li>URL Input</li>
+          <li>Speech Input</li>
+        </ol><br>
+         Nowadays, huge texts need a cutdown. The text can be summarised by using various algorithms.</p>
+    </div>
+
+    <div style="text-align:center; margin: 50px; padding:50px; background-color: blanchedalmond;">
+        <form method="POST" action ='/text_con'>
+            <button class = "btn btn-primary">TEXT</button>
+        </form>
+    </div>  
+  </div>
+
+</body>
+</html>
