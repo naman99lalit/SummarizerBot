@@ -97,6 +97,10 @@
         background-color: transparent;
         color: white;
     }
+    #main {
+      display: flex;
+      align-items: center;
+    }
   </style>
 	<title>Text Summarizer</title>
 
@@ -119,9 +123,15 @@
          Nowadays, huge texts need a cutdown. The text can be summarised by using various algorithms.</p>
     </div>
 
-    <div style="text-align:center; margin: 50px; padding:50px; background-color: blanchedalmond;">
-        <form method="POST" action ='/text_con'>
+    <div id="main" style="text-align:center; margin: 50px; padding:50px; background-color: blanchedalmond;">
+        <form method="POST" action ='/text_con' style="margin-right: 50px;">
             <button class = "btn btn-primary">TEXT</button>
+        </form>
+        <form method="POST" action ='/url_con' style="margin-right: 50px;">
+          <button class = "btn btn-primary">URL</button>
+        </form>
+        <form method="POST" action ='/' style="margin-right: 50px;">
+          <button class = "btn btn-primary">Speech</button>
         </form>
     </div>  
   </div>

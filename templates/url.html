@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+</head>
+<body>
+    <h1>
+        <div class="topnav container" style="text-align:left; margin-left: 50px; margin-right: 100px; padding:25 ">
+            
+            <a style="color: black; margin-right: 20px;" href="/text_con">Text</a>
+            <a style="color: black; margin-right: 20px;" href="/url_con">URL</a>
+            <a style="color: black; margin-right: 20px;" href="/">Speech</a>
+        
+        </div>
+    </h1>
+
+
+    <div style="margin: 50px; padding: 50;">
+        <h2 style="margin-top: 20px; color: blue;">Enter the url</h2>
+        <form class="form-signin" method="POST" action ='/url_results'>
+        <input type="text" name="input_text" id="inputName" class="form-control" placeholder="Enter URL address here" required autofocus><br/>
+            <div class="url" style="font-size: 30px ;margin: 20px; font-size: 20px ;border: blue;">
+                <input type="submit" class="btn btn-success btn-block" style="border-radius: 0.5cm; border-color: green ;background-color: lightgreen; font-size: 20px;"></input>
+            </div>
+        </form>
+        {% if output_summary %}
+            <h3>The summarized text is as follows: </h3>
+            <p style="color: black; font-size: 20px;">{{ output_summary }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
