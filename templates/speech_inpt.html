@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html style="margin: auto; display:table;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">
+    </script>
+    <script>var synth = window.speechSynthesis;</script>
+    <style>
+        .bgimg-1 {
+        position: relative;
+        opacity: 0.65;
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        }
+        body {
+        background-image: url("/static/pic2.jpg");
+        min-height: 100%;
+        }
+        .speech {
+            border: 0px solid #DDD;
+            width: 600px;
+            padding: 0;
+            margin: 0;
+            font-family: "Calibri";
+        }
+
+            .speech input {
+                border: 1;
+                width: 240px;
+                display: inline-block;
+                height: 30px;
+            }
+
+            .speech img {
+                float: right;
+                width: 40px;
+            }
+    </style>
+</head>
+
+<body bgcolor="#e2e2e2">
+<div class="bigimg-1">
+
+    <div class="speech">
+   
+            <textarea style="width: 600px;font-family: Calibri;font-size:x-large" name="q" id="transcript"
+                      placeholder="Click this belown icon and speak" rows="2" readonly="True"></textarea>
+            <br>
+            <button id="btn_query" onclick="startDictation()"><img src="../static/microphone.jpg"></button>
+            <img src="static/loader.gif" width="100px" align="left" style="float: left" hidden="True" id="loader" />
+            <br><br>
+           
+           
+            <textarea class="body" style="width: 600px;height: 400px;font-family: Calibri;font-size:x-large" id="output" rows="2" placeholder="Summary will be displayed here"
+                      readonly="True"></textarea>
+	<button id="btn_speak"  onclick="btnClick()"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle-icons-speaker.svg/2000px-Circle-icons-speaker.svg.png"></button>
+
+    </div>
+
+    <!-- HTML5 Speech Recognition API -->
+    <script>
+            function startDictation() {
+                document.getElementById('transcript').value = '';
+                document.getElementById('output').value = '';
+                if (window.hasOwnProperty('webkitSpeechRecognition')) {
+                    var recognition = new webkitSpeechRecognition();
+                    recognition.continuous = false;
+                    recognition.interimResults = false;
+                    recognition.lang = "en-US";
+                    recognition.start();
+                    recognition.onresult = function (e) {
+                        document.getElementById('loader').hidden = false;
+                        document.getElementById('transcript').value = e.results[0][0].transcript;
+                        recognition.stop();
+                        var data = e.results[0][0].transcript;
+                        $.post("http://localhost:3000/news_urls", { "data": data },
+                        function (response) {
+                        document.getElementById('loader').hidden = true;
+                            data = response;
+                            document.getElementById("output").value = data["urls"];
+                        }).error(function (response) {
+                        document.getElementById('loader').hidden = true;
+                            if (response.status == 400)
+                                text = jQuery.parseJSON(response.responseText)["original_exception"];
+                            else
+                                text = "I'm sorry. I did not get that.";
+                            document.getElementById("output").value = text;
+                        });
+                    };
+                    recognition.onerror = function (e) {
+                        recognition.stop();
+                        console.log("Recognition had an error");
+                    }
+                }
+            }
+
+            function btnClick() {
+	                synth.cancel();
+                    var utterThis = new SpeechSynthesisUtterance(document.getElementById("output").value);
+                    utterThis.voice = synth.getVoices()[0];
+                    utterThis.pitch = 1.0;
+                    utterThis.rate = 0.8;
+                    utterThis.onerror = function(e) { console.log("Something went wrong with utterance."); };
+                    synth.speak(utterThis);
+            }
+    </script>
+</div>
+</body>
+
+</html>

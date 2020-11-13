@@ -1,7 +1,11 @@
 from flask import Flask, render_template, send_from_directory, request
 from internet_conn import summ_from_text, shorten_news
+from flask_restful import Api, Resource, reqparse
+from query import QueryService
 
 app = Flask(__name__)
+api = Api(app)
+api.add_resource(QueryService, '/news_urls')
 
 # Introduction
 @app.route("/")
@@ -19,6 +23,14 @@ def text_con():
 @app.route("/url_con", methods = ["POST", "GET"])
 def url_con():
     return render_template("url.html")
+
+
+
+# Speech Input - Route
+@app.route("/speech_con", methods = ["POST", "GET"])
+def speech_con():
+    print("Inside Speech route")
+    return render_template("speech_inpt.html")
 
 
 # Text Input Results
@@ -43,6 +55,7 @@ def url_result():
     print("result")
     print(result)
     return render_template("url.html",output_summary=result)
+
 
 
 if __name__ == '__main__':
