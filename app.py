@@ -36,12 +36,10 @@ def speech_con():
 # Text Input Results
 @app.route("/results",methods=["POST"])
 def result():
-    print("inside app index")
     text = request.form['input_text']
     print(text)
     var = summ_from_text(text)
-    print("var")
-    print(var)
+    print("var", var)
     return render_template("inputtext.html", output_summary = var)
 
 
