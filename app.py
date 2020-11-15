@@ -1,7 +1,8 @@
 from flask import Flask, render_template, send_from_directory, request
-from internet_conn import summ_from_text, shorten_news
+from internet_conn import summ_from_text, shorten_news, shorten_lex_text
 from flask_restful import Api, Resource, reqparse
 from query import QueryService
+from LexRankSummarizer import summary_from_text
 
 app = Flask(__name__)
 api = Api(app)
@@ -38,9 +39,22 @@ def speech_con():
 def result():
     text = request.form['input_text']
     print(text)
-    var = summ_from_text(text)
-    print("var", var)
-    return render_template("inputtext.html", output_summary = var)
+    
+    # Algo 1 (Word Frequency)
+    algo1_summ = summ_from_text(text)
+    print("TF Summary: ", algo1_summ)
+
+    # Algo 2 (LexRank Algo)
+    result = summary_from_text(text)
+    
+    algo2_sum = ""
+    for i in range(len(result)):
+        algo2_sum += str(result[i])
+
+    print("LexRank Summary: ", algo2_sum)
+
+
+    return render_template("inputtext.html", output_summary1 = algo1_summ, output_summary2 = algo2_sum)
 
 
 # URL Input Results
@@ -49,10 +63,16 @@ def url_result():
     print("inside url func")
     url = request.form['input_text']
     print(url)
-    result = shorten_news(url)
-    print("result")
-    print(result)
-    return render_template("url.html",output_summary=result)
+    
+    # Word Freq Algorithm 
+    wf_result = shorten_news(url)
+    print("wf_result: ", wf_result)
+
+    # LexRank Algorithm
+    lr_result = shorten_lex_text(url)
+    print("lr_result: ", lr_result)
+
+    return render_template("url.html",output_summary1 = wf_result, output_summary2 = lr_result)
 
 
 

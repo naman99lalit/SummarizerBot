@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup as bs
 from summarizer import FrequencySummarizer as fs
 import wikipedia as _wk
 from re import findall as _findall
+from LexRankSummarizer import summary_from_text
+
 
 _guardian_key = "f26b6c0c-379f-4961-a47f-1dfaf40b9aa2"
 _nyt_key = "02bcc44cbbf544b5927be9b458490c6f"
@@ -69,7 +71,7 @@ def get_gkg(query):
 
 # Text summarizer call
 def summ_from_text(text):
-    n=2
+    n=4
     summary = fs().summarize(text,n)
     print("summary")
     print (summary) 
@@ -86,10 +88,27 @@ def shorten_news(url, n = 4):
     page = response.content
     soup = bs(page, "lxml")
     print("soup")
-    summary = fs().summarize("\n".join([x.text for x in soup.findAll("p") if len(x.text.split()) > 1]), n)
+    data = "\n".join([x.text for x in soup.findAll("p") if len(x.text.split()) > 1])
+    # print("data: ", data)
+    summary = fs().summarize(data, n)
     print("summary")
-    print(summary) 
-    summary.insert(0, soup.title.text)
+    # print(summary) 
+    # summary.insert(0, soup.title.text)
     print("nxjnd")
     return ' '.join(summary)
 
+# Summary for LexRank Algorithm
+def shorten_lex_text(url, n = 4):
+    print("inside url extractor")
+    response = _req.get(url)
+    print(response)
+    if not response.ok:
+        return False
+    page = response.content
+    soup = bs(page, "lxml")
+    print("soup in lexrank")
+    data = "\n".join([x.text for x in soup.findAll("p") if len(x.text.split()) > 1])
+    # print("lexrank data: ", data)
+    # print(type(data))
+    summary = summ_from_text(data)
+    return ''.join(summary)
