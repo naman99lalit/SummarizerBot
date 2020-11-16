@@ -60,11 +60,11 @@ class NYTAggregator:
 def get_gkg(query):
     print ("inside get_news of get_gkg")
     try:
-        s = _wk.summary(query, sentences = 5)
-        for x in _findall("\(.*\)", s):
-            s = s.replace(x, "")
-        return s
-    except (_wk.DisambiguationError, e):
+        page_object = _wk.page(query)
+        s = page_object.content
+        summ = summ_from_text(s)
+        return summ
+    except (_wk.DisambiguationError,e):
         return False
 
 
