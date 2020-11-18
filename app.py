@@ -3,6 +3,7 @@ from internet_conn import summ_from_text, shorten_news, shorten_lex_text
 from flask_restful import Api, Resource, reqparse
 from query import QueryService
 from LexRankSummarizer import summary_from_text
+from audio_conversion import convert_mp3_to_wav, convert_audio_to_text
 
 app = Flask(__name__)
 api = Api(app)
@@ -34,6 +35,41 @@ def speech_con():
     return render_template("speech_inpt.html")
 
 
+# Audio File as Input - Route
+@app.route("/speech_aud", methods = ["POST", "GET"])
+def speech_aud():
+    print("Inside Speech route where audio file as input")
+    return render_template("speech_aud.html")
+
+
+# Audio Input Results
+@app.route("/speech_results",methods=["POST"])
+def speech_result():
+    audio_file = request.form['input_file']
+    print(type(audio_file))
+
+    converted_audio_file = convert_mp3_to_wav(audio_file)
+
+    text = convert_audio_to_text(converted_audio_file)
+    
+    # Algo 1 (Word Frequency)
+    algo1_summ = summ_from_text(text)
+    print("TF Summary: ", algo1_summ)
+
+    # Algo 2 (LexRank Algo)
+    result = summary_from_text(text)
+    
+    algo2_sum = ""
+    for i in range(len(result)):
+        algo2_sum += str(result[i])
+
+    print("LexRank Summary: ", algo2_sum)
+
+
+    return render_template("speech_aud.html", output_summary1 = algo1_summ, output_summary2 = algo2_sum)
+
+
+
 # Text Input Results
 @app.route("/results",methods=["POST"])
 def result():
@@ -55,6 +91,7 @@ def result():
 
 
     return render_template("inputtext.html", output_summary1 = algo1_summ, output_summary2 = algo2_sum)
+
 
 
 # URL Input Results
