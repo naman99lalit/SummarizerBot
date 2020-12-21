@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as bs
 from summarizer import FrequencySummarizer as fs
 import wikipedia as _wk
 from re import findall as _findall
-from LexRankSummarizer import summary_from_text
+from LexRankSummarizer import summary_from_lex_text
 
 
 _guardian_key = "f26b6c0c-379f-4961-a47f-1dfaf40b9aa2"
@@ -62,7 +62,7 @@ def get_gkg(query):
     try:
         page_object = _wk.page(query)
         s = page_object.content
-        summ = summ_from_text(s)
+        summ = summ_from_text(s, 5)
         return summ
     except (_wk.DisambiguationError,e):
         return False
@@ -70,8 +70,8 @@ def get_gkg(query):
 
 
 # Text summarizer call
-def summ_from_text(text):
-    n=4
+def summ_from_text(text, length):
+    n = length
     summary = fs().summarize(text,n)
     print("summary")
     print (summary) 
@@ -79,7 +79,7 @@ def summ_from_text(text):
 
 
 # URL Func 
-def shorten_news(url, n = 4):
+def shorten_news(url, n):
     print("inside get_news of shorten_news")
     response = _req.get(url)
     print(response)
@@ -98,8 +98,9 @@ def shorten_news(url, n = 4):
     return ' '.join(summary)
 
 # Summary for LexRank Algorithm
-def shorten_lex_text(url, n = 4):
+def shorten_lex_text(url, n):
     print("inside url extractor")
+    n = int(n)
     response = _req.get(url)
     print(response)
     if not response.ok:
@@ -110,5 +111,9 @@ def shorten_lex_text(url, n = 4):
     data = "\n".join([x.text for x in soup.findAll("p") if len(x.text.split()) > 1])
     # print("lexrank data: ", data)
     # print(type(data))
-    summary = summ_from_text(data)
-    return ''.join(summary)
+    print(n, type(n))
+    summary = summary_from_lex_text(data, n)
+    # print(summary)
+    return summary
+
+# Assign Sentence Length

@@ -8,7 +8,7 @@
         <style>
             .speech {
                 border: 0px solid #DDD;
-                width: 600px;
+                width: 1000px;
                 padding: 0;
                 margin: 0;
                 font-family: "Calibri";
@@ -24,39 +24,69 @@
                 float: right;
                 width: 40px;
             }
+            ul {
+            list-style-type: none;
+            overflow: hidden;
+            border: 1px solid #e7e7e7;
+            background-color: #f3f3f3;
+            line-height: 30px;
+        }
+        
+        li {
+          float: left;
+        }
+        
+        li a {
+          display: block;
+          color: #666;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+        
+        li a:hover:not(.active) {
+          background-color: #ddd;
+        }
+        
+        a.active {
+          color: white;
+          background-color: #4CAF50;
+        }
+        .btn_query{
+            height: 20px;
+        }
         </style>
     </head>
-    <h1>
-        <div class="topnav container" style="text-align:left; margin-left: -200px; margin-right: 100px; padding:25 ">
-            
-            <a style="color: black; margin-right: 20px;" href="/text_con">Text</a>
-            <a style="color: black; margin-right: 20px;" href="/url_con">URL</a>
-            <a style="color: black; margin-right: 20px;" href="/speech_con">Speech</a>
-        
-        </div>
 
-    </h1>
+    <ul>
+        <li style="margin-right: 20px;"><a href="/text_con">Text</a></li>
+        <li style="margin-right: 20px;"><a href="/url_con">URL</a></li>
+        <li style="margin-right: 20px;"><a href="/speech_con">Speech</a></li>
+        <li style="float:right"><a class="active" href="/">Home</a></li>
+    </ul>
+
+    <u><b><p style="font-size: 40px;text-align: center; font-family: Arial, Helvetica, sans-serif; color: black;">Speech Summarization</p></b></u>
+
     <body>
-        <div>
+        <div style="margin: 50px; padding: 20px; background-color: whitesmoke; border-radius: 1cm;">
             <div style="margin-top: 30px;">
-                <h3 style="color: blue;">This gives summary of the word by searching the wikipedia page of that object. <br> Summary is produced by LexRank Algorithm</h3>
+                <h3 style="color: blue; text-align: center;">This gives summary of the word by searching the wikipedia page of that object. <br> Summary is produced by LexRank Algorithm</h3>
             </div>
             <div class="speech">
         
                     <div style="display: inline; margin-right: 20px;">
-                        <button id="btn_query" onclick="startDictation()"><img src="../static/microphone.jpg"></button>
+                        <button id="btn_query" onclick="startDictation()"><img src="../static/microphone.jpg" style="height: 40px ; width: 30px"></button>
                     </div>
                     <div style="display: inline">
-                        <textarea style="width: 320px;font-family: Calibri; font-size:x-large;" name="q" id="transcript"
-                            placeholder="Click this icon and speak" rows="2" readonly="True"></textarea>
+                        <b><textarea style="width: 150px;font-family: Calibri; font-size:medium; color: black;" name="q" id="transcript"
+                            placeholder="Click this icon and speak" rows="2" readonly="True"></textarea></b>
                     </div>
                     <img src="static/loader.gif" width="100px" align="left" style="float: left" hidden="True" id="loader" />
                     <br><br>
                 
                 
-                    <textarea class="body" style="width: 600px;height: 400px;font-family: Calibri;font-size:x-large" id="output" rows="2" placeholder="Summary will be displayed here"
-                            readonly="True"></textarea>
-            <button id="btn_speak"  onclick="btnClick()"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle-icons-speaker.svg/2000px-Circle-icons-speaker.svg.png"></button>
+                    <textarea class="body" style="width: 800px;height: 300px;font-family: Calibri;font-size:x-large" id="output" rows="2" placeholder="Summary will be displayed here" readonly="True"></textarea>
+            <button id="btn_speak"  onclick="btnClick()"><img style="width: 30px; height: 30px;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Circle-icons-speaker.svg/2000px-Circle-icons-speaker.svg.png"></button>
 
             </div>
 
