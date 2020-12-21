@@ -30,6 +30,7 @@ class FrequencySummarizer:
     def summarize(self, text, n):
         print("sum summarize")
         print(text, n)
+        n = int(n)
         sents = sent_tokenize(text)
         print(sents)
         assert n <= len(sents)

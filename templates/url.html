@@ -3,34 +3,79 @@
 <head>
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-</head>
-<body>
-    <h1>
-        <div class="topnav container" style="text-align:left; margin-left: 50px; margin-right: 100px; padding:25 ">
-            
-            <a style="color: black; margin-right: 20px;" href="/text_con">Text</a>
-            <a style="color: black; margin-right: 20px;" href="/url_con">URL</a>
-            <a style="color: black; margin-right: 20px;" href="/speech_con">Speech</a>
+    <style>
+        ul {
+            list-style-type: none;
+            overflow: hidden;
+            border: 1px solid #e7e7e7;
+            background-color: #f3f3f3;
+            line-height: 30px;
+        }
         
-        </div>
-    </h1>
+        li {
+          float: left;
+        }
+        
+        li a {
+          display: block;
+          color: #666;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+        }
+        
+        li a:hover:not(.active) {
+          background-color: #ddd;
+        }
+        
+        a.active {
+          color: white;
+          background-color: #4CAF50;
+        }
+        </style>
 
+</head>
 
-    <div style="margin: 50px; padding: 50;">
-        <h2 style="margin-top: 20px; color: blue;">Enter the url</h2>
-        <form class="form-signin" method="POST" action ='/url_results'>
-        <input type="text" name="input_text" id="inputName" class="form-control" placeholder="Enter URL address here" required autofocus><br/>
+<body>
+
+    <ul style="margin-right: 50px; margin-left: 50px;">
+        <li style="margin-right: 20px;"><a href="/text_con">Text</a></li>
+        <li style="margin-right: 20px;"><a href="/url_con">URL</a></li>
+        <li style="margin-right: 20px;"><a href="/speech_con">Speech</a></li>
+        <li style="float:right"><a class="active" href="/">Home</a></li>
+    </ul>
+
+    <u><b><p style="font-size: 40px;text-align: center; font-family: Arial, Helvetica, sans-serif; color: black;">URL Summarization</p></b></u>
+
+    <div style="margin: 50px; padding: 50; background-color: whitesmoke; border-radius: 1cm;">
+
+        <form style="text-align: center; padding-top: 20px;" class="form-signin" method="POST" action ='/url_results'>
+            <h2 style="margin-top: 20px; color: blue;">URL</h2>
+            <input type="text" style="font-size: 15px;" name="input_text" id="inputName" class="form-control" placeholder="Enter URL" required autofocus><br/>
+            
+            <br><br>
+
+            <h2 style="margin-top: 20px; color: blue">No of sentences</h2>
+            <input type="number" style="font-size: 15px;" name="input_sentence" id="inputNumber" class="form-control" placeholder="Sentence Length" required autofocus><br/>
+
             <div class="url" style="font-size: 30px ;margin: 20px; font-size: 20px ;border: blue;">
-                <input type="submit" class="btn btn-success btn-block" style="border-radius: 0.5cm; border-color: green ;background-color: lightgreen; font-size: 20px;"></input>
+                <input type="submit" class="btn btn-success btn-block" style="color: white ;border-radius: 0.5cm; border-color: lightblue white ;background-color:blue; font-size: 20px;"></input>
             </div>
         </form>
+        <br> <br>
         {% if output_summary1 and output_summary2 %}
-            <h3>The summarized text using Word Frequency Algorithm is as follows: </h3>
-            <p style="color: black; font-size: 20px;">{{ output_summary1 }}</p>
 
+            <div style="margin: 5px; padding: 5px ;background-color: #87ceeb; border-radius: 0.5cm;">
+                <h3 style="text-align: center;">Summary: Word Frequency Algorithm</h3>
+                <p style="color: black; font-size: 20px;">{{ output_summary1 }}</p>
+            </div>
             <br> <br>
-            <h3>The summarized text using LexRank Algorithm is as follows: </h3>
-            <p style="color: black; font-size: 20px;">{{ output_summary2 }}</p>
+            <div style="margin: 5px; padding: 5px ;background-color: #87ceeb; border-radius: 0.5cm;">
+                <h3 style="text-align: center;">Summary: LexRank Algorithm</h3>
+                <p style="color: black; font-size: 20px;">{{ output_summary2 }}</p>
+            </div>
+            <br><br>
+
         {% endif %}
     </div>
 </body>
