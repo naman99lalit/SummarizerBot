@@ -63,7 +63,7 @@
             </div>
         </form>
         <br> <br>
-        {% if output_summary1 and output_summary2 %}
+        {% if output_summary1 and output_summary2 and output_summary3%}
 
             <div style="margin: 5px; padding: 5px ;background-color: #87ceeb; border-radius: 0.5cm;">
                 <h3 style="text-align: center;">Summary: Word Frequency Algorithm</h3>
@@ -73,6 +73,12 @@
             <div style="margin: 5px; padding: 5px ;background-color: #87ceeb; border-radius: 0.5cm;">
                 <h3 style="text-align: center;">Summary: LexRank Algorithm</h3>
                 <p style="color: black; font-size: 20px;">{{ output_summary2 }}</p>
+            </div>
+            <br><br>
+
+            <div style="margin: 5px; padding: 5px ;background-color: #87ceeb; border-radius: 0.5cm;">
+                <h3 style="text-align: center;">Summary: BERT Sum Algorithm</h3>
+                <p style="color: black; font-size: 20px;">{{ output_summary3 }}</p>
             </div>
             <br><br>
 
