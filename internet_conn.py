@@ -1,9 +1,10 @@
 import requests as _req
 from bs4 import BeautifulSoup as bs
-from summarizer import FrequencySummarizer as fs
+from TFSummarizer import FrequencySummarizer as fs
 import wikipedia as _wk
 from re import findall as _findall
 from LexRankSummarizer import summary_from_lex_text
+from BERTSummarizer import bertSummariser
 
 
 _guardian_key = "f26b6c0c-379f-4961-a47f-1dfaf40b9aa2"
@@ -116,4 +117,20 @@ def shorten_lex_text(url, n):
     # print(summary)
     return summary
 
-# Assign Sentence Length
+
+# Summary for BERT Sum Algorithm
+def shorten_bert_text(url, n):
+    print("inside url extractor")
+    n = int(n)
+    response = _req.get(url)
+    print(response)
+    if not response.ok:
+        return False
+    page = response.content
+    soup = bs(page, "lxml")
+    print("soup in bert sum")
+    data = "\n".join([x.text for x in soup.findAll("p") if len(x.text.split()) > 1])
+    print("bert data: ", data)
+    summary = bertSummariser(data.encode('utf-8'), n)
+    print("bert summary: ", summary)
+    return summary

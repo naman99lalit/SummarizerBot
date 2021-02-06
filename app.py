@@ -1,13 +1,16 @@
-from flask import Flask, render_template, send_from_directory, request
-from internet_conn import summ_from_text, shorten_news, shorten_lex_text
+from flask import Flask, render_template, send_from_directory, request, jsonify
+from internet_conn import summ_from_text, shorten_news, shorten_lex_text, shorten_bert_text
 from flask_restful import Api, Resource, reqparse
 from query import QueryService
 from LexRankSummarizer import summary_from_lex_text
 from audio_conversion import convert_mp3_to_wav, convert_audio_to_text
+from BERTSummarizer import bertSummariser, bertSummariserNews
 
 app = Flask(__name__)
 api = Api(app)
 api.add_resource(QueryService, '/news_urls')
+
+
 
 # Introduction
 @app.route("/")
@@ -53,20 +56,20 @@ def speech_result():
     text = convert_audio_to_text(converted_audio_file)
     
     # Algo 1 (Word Frequency)
-    algo1_summ = summ_from_text(text, 5)
-    print("TF Summary: ", algo1_summ)
+    tf_summ = summ_from_text(text, 5)
+    # print("TF Summary: ", tf_summ)
 
     # Algo 2 (LexRank Algo)
-    result = summary_from_lex_text(text, 5)
+    lex_result = summary_from_lex_text(text, 5)
     
-    algo2_sum = ""
-    for i in range(len(result)):
-        algo2_sum += str(result[i])
+    lex_sum = ""
+    for i in range(len(lex_result)):
+        lex_sum += str(lex_result[i])
 
-    print("LexRank Summary: ", algo2_sum)
+    # print("LexRank Summary: ", lex_sum)
 
 
-    return render_template("speech_aud.html", output_summary1 = algo1_summ, output_summary2 = algo2_sum)
+    return render_template("speech_aud.html", output_summary1 = tf_summ, output_summary2 = lex_sum)
 
 
 
@@ -78,20 +81,23 @@ def result():
     print(text, length)
     
     # Algo 1 (Word Frequency)
-    algo1_summ = summ_from_text(text, length)
-    print("TF Summary: ", algo1_summ)
+    tf_summ = summ_from_text(text, length)
+    # print("TF Summary: ", tf_summ)
 
     # Algo 2 (LexRank Algo)
-    result = summary_from_lex_text(text, length)
+    lex_result = summary_from_lex_text(text, length)
     
-    algo2_sum = ""
-    for i in range(len(result)):
-        algo2_sum += str(result[i])
+    lex_sum = ""
+    for i in range(len(lex_result)):
+        lex_sum += str(lex_result[i])
+    # print("LexRank Summary: ", lex_sum)
 
-    print("LexRank Summary: ", algo2_sum)
+    #Algo 3 (BERT Extractive)
+    bert_result = bertSummariser(text, length)
+    # print("BERT Summary: ", bert_result)
 
 
-    return render_template("inputtext.html", output_summary1 = algo1_summ, output_summary2 = algo2_sum)
+    return render_template("inputtext.html", output_summary1 = tf_summ, output_summary2 = lex_sum, output_summary3 = bert_result)
 
 
 
@@ -111,11 +117,16 @@ def url_result():
     lr_result = shorten_lex_text(url, length)
     print("lr_result: ", lr_result)
 
-    algo2_sum = ""
+    lex_sum = ""
     for i in range(len(lr_result)):
-        algo2_sum += str(lr_result[i])
+        lex_sum += str(lr_result[i])
 
-    return render_template("url.html",output_summary1 = wf_result, output_summary2 = algo2_sum)
+    
+    # Bert Sum Algorithm
+    bert_result = bertSummariserNews(url, length)
+    # print("bert_result: ", bert_result)
+
+    return render_template("url.html",output_summary1 = wf_result, output_summary2 = lex_sum, output_summary3 = bert_result)
 
 
 
