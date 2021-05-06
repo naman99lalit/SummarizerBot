@@ -12,13 +12,13 @@ _nlp = _s.load('en_core_web_sm')
 
 class QueryExtractor(object):
     def __init__(self):
-        print("inside QueryExtractor")
+        # print("inside QueryExtractor")
         pass
 
     def _split_text(self, text):
-        print("inside _split_text")
+        # print("inside _split_text")
         doc = _nlp(text)
-        print(doc)
+        # print(doc)
         return dict(
             doc = doc,
             nc = list(doc.noun_chunks),
@@ -26,22 +26,22 @@ class QueryExtractor(object):
             tag = map(lambda x: (x, x.tag_), doc))
 
     def get_news_tokens(self, text):
-        print("inside get_news_tokens")
+        # print("inside get_news_tokens")
         components = self._split_text(text)
-        print (components)
+        # print (components)
         doc, nc, pos = _ig("doc", "nc", "pos")(components)
         index = zip(*pos)[1].index("ADP") + 1
         multi_adp = (_c(zip(*pos)[1]).get("ADP") or 0) > 1
         source = nc[-1].text.lower() if multi_adp else "nyt"
         index = nc.index([i for i in nc if doc[index].lemma_ in i.lemma_][0])
         query = " ".join(map(lambda x: x.lemma_, nc[index:-1] if multi_adp else nc[index:]))
-        print (query,source)
+        # print (query,source)
         return source, query
 
     def get_knowledge_tokens(self, text):
         print ("inside get_knowledge_tokens")
         components = self._split_text(text)
-        print ("sdkfk")
+        # print ("sdkfk")
         doc, nc, pos, tag = _ig("doc", "nc", "pos", "tag")(components)
         try:
             terms = pos[[i[0] for i in enumerate(tag) if i[1][1] == "VBZ"][0] + 1:]

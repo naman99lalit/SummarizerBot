@@ -5,6 +5,7 @@ import wikipedia as _wk
 from re import findall as _findall
 from LexRankSummarizer import summary_from_lex_text
 from BERTSummarizer import bertSummariser
+from TextRankSummarizer import textRankSummarizer
 
 
 _guardian_key = "f26b6c0c-379f-4961-a47f-1dfaf40b9aa2"
@@ -32,14 +33,14 @@ class GuardianAggregator:
         self._limit = None
 
     def get_news(self, query):
-        print("inside get_news of GuardianAggregator")
+        # print("inside get_news of GuardianAggregator")
         self._params["q"] = str(query)
         response = _req.get(_guardian_url, params = self._params)
         return [x["webUrl"] for x in response.json()["response"]["results"] if x["type"] == "article" and
                 x["sectionName"] != u"Media" and "quiz" not in x["webUrl"].lower()]
 
     def get_limit(self):
-        print("inside get_limit of get_limit")
+        # print("inside get_limit of get_limit")
         if not self._limit:
             self.get_news("test")
         return self._limit
@@ -50,7 +51,7 @@ class NYTAggregator:
         self._params = {"q": "", "api-key": _nyt_key}
 
     def get_news(self, query):
-        print("inside get_news of NYTAggregator")
+        # print("inside get_news of NYTAggregator")
         self._params["q"] = str(query)
         response = _req.get(_nyt_url, params = self._params)
         return [x["web_url"] for x in response.json()["response"]["docs"] if x["type_of_material"] == "News"]
@@ -74,45 +75,45 @@ def get_gkg(query):
 def summ_from_text(text, length):
     n = length
     summary = fs().summarize(text,n)
-    print("summary")
-    print (summary) 
+    # print("summary")
+    # print (summary) 
     return ' '.join(summary)
 
 
 # URL Func 
 def shorten_news(url, n):
-    print("inside get_news of shorten_news")
+    # print("inside get_news of shorten_news")
     response = _req.get(url)
-    print(response)
+    # print(response)
     if not response.ok:
         return False
     page = response.content
     soup = bs(page, "lxml")
-    print("soup")
+    # print("soup")
     data = "\n".join([x.text for x in soup.findAll("p") if len(x.text.split()) > 1])
     # print("data: ", data)
     summary = fs().summarize(data, n)
-    print("summary")
+    # print("summary")
     # print(summary) 
     # summary.insert(0, soup.title.text)
-    print("nxjnd")
+    # print("nxjnd")
     return ' '.join(summary)
 
 # Summary for LexRank Algorithm
 def shorten_lex_text(url, n):
-    print("inside url extractor")
+    # print("inside url extractor")
     n = int(n)
     response = _req.get(url)
-    print(response)
+    # print(response)
     if not response.ok:
         return False
     page = response.content
     soup = bs(page, "lxml")
-    print("soup in lexrank")
+    # print("soup in lexrank")
     data = "\n".join([x.text for x in soup.findAll("p") if len(x.text.split()) > 1])
     # print("lexrank data: ", data)
     # print(type(data))
-    print(n, type(n))
+    # print(n, type(n))
     summary = summary_from_lex_text(data, n)
     # print(summary)
     return summary
@@ -120,17 +121,34 @@ def shorten_lex_text(url, n):
 
 # Summary for BERT Sum Algorithm
 def shorten_bert_text(url, n):
-    print("inside url extractor")
+    # print("inside url extractor")
     n = int(n)
     response = _req.get(url)
-    print(response)
+    # print(response)
     if not response.ok:
         return False
     page = response.content
     soup = bs(page, "lxml")
-    print("soup in bert sum")
+    # print("soup in bert sum")
     data = "\n".join([x.text for x in soup.findAll("p") if len(x.text.split()) > 1])
-    print("bert data: ", data)
+    # print("bert data: ", data)
     summary = bertSummariser(data.encode('utf-8'), n)
-    print("bert summary: ", summary)
+    # print("bert summary: ", summary)
+    return summary
+
+
+# Summary for Text Rank Algorithm
+def shorten_text_rank(url, n):
+    n = int(n)
+    response = _req.get(url)
+    # print(response)
+    if not response.ok:
+        return False
+    page = response.content
+    soup = bs(page, "lxml")
+    # print("soup in bert sum")
+    data = "\n".join([x.text for x in soup.findAll("p") if len(x.text.split()) > 1])
+    # print("bert data: ", data)
+    summary = textRankSummarizer(data, n)
+    # print("bert summary: ", summary)
     return summary

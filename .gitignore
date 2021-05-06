@@ -1,2 +1,4 @@
 /venv1
 /__pycache__
+/.vscode
+get-pip.py
