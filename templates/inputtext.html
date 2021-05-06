@@ -63,21 +63,34 @@
             </div>
         </form>
         <br> <br>
-        {% if output_summary1 and output_summary2 and output_summary3 %}
+        {% if output_summary1 and output_summary2 and output_summary3 and output_summary4 %}
 
             <div style="margin: 5px; padding: 5px ;background-color: #87ceeb; border-radius: 0.5cm;">
                 <h3 style="text-align: center;">Summary: Word Frequency Algorithm</h3>
-                <p style="color: black; font-size: 20px;">{{ output_summary1 }}</p>
+                {% for val in output_summary1 %}
+                    <p style="color: black; font-size: 20px;">{{val}}</p>
+                {% endfor %}
             </div>
             <br> <br>
             <div style="margin: 5px; padding: 5px ;background-color: #87ceeb; border-radius: 0.5cm;">
                 <h3 style="text-align: center;">Summary: LexRank Algorithm</h3>
-                <p style="color: black; font-size: 20px;">{{ output_summary2 }}</p>
+                {% for val in output_summary2 %}
+                    <p style="color: black; font-size: 20px;">{{val}}</p>
+                {% endfor %}
             </div>
             <br><br>
             <div style="margin: 5px; padding: 5px ;background-color: #87ceeb; border-radius: 0.5cm;">
                 <h3 style="text-align: center;">Summary: BERT Sum Algorithm</h3>
-                <p style="color: black; font-size: 20px;">{{ output_summary3 }}</p>
+                {% for val in output_summary3 %}
+                    <p style="color: black; font-size: 20px;">{{val}}</p>
+                {% endfor %}
+            </div>
+            <br><br>
+            <div style="margin: 5px; padding: 5px ;background-color: #87ceeb; border-radius: 0.5cm;">
+                <h3 style="text-align: center;">Summary: Text Rank Algorithm</h3>
+                {% for val in output_summary4 %}
+                    <p style="color: black; font-size: 20px;">{{val}}</p>
+                {% endfor %}
             </div>
             <br><br>
 

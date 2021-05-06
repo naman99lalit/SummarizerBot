@@ -11,29 +11,29 @@ from internet_conn import (shorten_news, get_gkg, GuardianAggregator as _ga, NYT
 
 class QueryService(Resource):
     def post(self):
-        print("inside QueryService")
+        # print("inside QueryService")
         args = parser.parse_args()
-        print("args",args)
+        # print("args",args)
         result = clf.predict(args["data"])
-        print("result",result)
+        # print("result",result)
         return result[0], 200 if result[1] else 400
 
 
 class QueryAnalyzer(object):
     def __init__(self):
-        print("inside QueryAnalyzer")
+        # print("inside QueryAnalyzer")
         self._query_extractor = _qe.QueryExtractor()
 
     def predict(self, data):
-        print("inside predict")
+        # print("inside predict")
         try:
             if "news" in data.lower() or "latest" in data.lower():
                 # News query
-                print("inside news")
+                # print("inside news")
                 source, query = self._query_extractor.get_news_tokens(data)
                 response = (_ga() if "guardian" in source else _nyt()).get_news(query)
-                print("Printing response")
-                print(response)
+                # print("Printing response")
+                # print(response)
                 if len(response) <= 0:
                     return {"phrase": "Sorry, no relevant results were returned."}, 500
                 i, done = 0, internet_conn.shorten_news(response[0])
@@ -45,8 +45,8 @@ class QueryAnalyzer(object):
             else:
                 # Knowledge query
                 done = get_gkg(self._query_extractor.get_knowledge_tokens(data))
-            print("done is below")
-            print(done)
+            # print("done is below")
+            # print(done)
             ret_val = {"urls": done}
             if not done:
                 ret_val["phrase"] = "Sorry, no valid results were returned."
